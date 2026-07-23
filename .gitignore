@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp/
+.yarn/
+
+# Build
+.next/
+out/
+dist/
+build/
+
+# Env
+.env
+.env*.local
+!.env.example
+
+# Scratch
+.tmp/
+.worktrees/
+
+# Agent coordination
+.commit-lock
+
+# Test / coverage
+coverage/
+test-results/
+playwright-report/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.log

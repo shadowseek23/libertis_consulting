@@ -1,0 +1,6 @@
+#!/bin/sh
+msg=$(grep -v '^#' "$1")
+echo "$msg" | head -1 | grep -qE '^(feat|fix|refactor|docs|test|chore|perf|style|build|ci)(\([a-z0-9-]+\))?!?: .{1,72}$' || {
+  echo "✗ První řádek musí být: <typ>(<scope>): <popis do 72 znaků>"; exit 1; }
+echo "$msg" | grep -q '^Zadání:' || { echo "✗ Chybí řádek 'Zadání:'"; exit 1; }
+echo "$msg" | grep -q '^Řešení:' || { echo "✗ Chybí řádek 'Řešení:'"; exit 1; }

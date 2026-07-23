@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "sanity": {
+      "type": "http",
+      "url": "https://mcp.sanity.io/mcp"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    }
+  }
+}
