@@ -3,11 +3,22 @@ node_modules/
 .pnp/
 .yarn/
 
-# Build
+# Next.js
 .next/
 out/
+next-env.d.ts
+
+# Build
 dist/
 build/
+*.tsbuildinfo
+
+# Sanity
+apps/studio/dist/
+apps/studio/.sanity/
+
+# Vercel
+.vercel
 
 # Env
 .env
@@ -17,9 +28,14 @@ build/
 # Scratch
 .tmp/
 .worktrees/
+temp/
 
 # Agent coordination
 .commit-lock
+
+# Skill installer artifacts (installed locally via `npx skills add`)
+.agents/
+skills-lock.json
 
 # Test / coverage
 coverage/

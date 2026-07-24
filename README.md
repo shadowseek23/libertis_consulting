@@ -1,47 +1,37 @@
-# project-template
+# {{PROJECT_NAME}}
 
-Šablona repozitáře pro AI-asistované projekty (Claude Code + Codex). Sjednocuje
-instrukce pro agenty, strukturu `docs/`/`memory/`, konvence commitů, git hooky
-a konfiguraci MCP serverů, aby každý nový projekt začínal ze stejného základu.
+Web na **Next.js 16 (App Router) + Sanity CMS**, bun workspaces monorepo.
+Repozitář vznikl z šablony `nextjs-sanity-template` (potomek `project-template`,
+viz [`.template-version`](.template-version) a [`TEMPLATE.md`](TEMPLATE.md)).
 
-Označ tento repozitář na GitHubu jako **Template repository** (Settings → General →
-„Template repository").
+> Config-only scaffold — konfigurace, závislosti a struktura složek jsou hotové,
+> aplikační kód (layout, stránky, schémata) si doplní projekt.
 
-## Založení nového projektu
+## Spuštění
 
-```powershell
-scripts/new-project.ps1 -Name muj-web
-# → vytvoří C:\_dev\muj-web z této šablony
+```bash
+bun install
+bun run dev       # Next.js web (apps/web)
+bun run studio    # Sanity Studio (apps/studio)
 ```
 
-Skript:
-- zkopíruje šablonu se **zachovanou git historií** (kvůli 3-way merge při updatech),
-- nastaví remote `template` na tento repozitář (rodičovství),
-- zapíše [`.template-version`](.template-version) s URL a commitem rodiče,
-- nahradí `{{PROJECT_NAME}}` v `AGENTS.md` a `README.md`,
-- zapne commit-msg hook (`git config core.hooksPath .githooks`).
+Před spuštěním doplň `projectId`/`dataset` do `apps/studio/sanity.config.ts`
+a `sanity.cli.ts` (hledej `TODO_PROJECT_ID`).
 
-Pak potomkovi nastavíš vlastní `origin` a odkomituješ.
+## Kontroly
 
-## Lineage a přenos změn
-
-Jak potomek pozná rodiče a jak se přenášejí opravy oběma směry:
-**[`TEMPLATE.md`](TEMPLATE.md)**.
-
-## Co je uvnitř
-
-```
-AGENTS.md            nadřazené instrukce pro agenty (invariant + TODO placeholdery)
-CLAUDE.md            @AGENTS.md
-.mcp.json            MCP servery pro Claude Code (uprav podle stacku)
-.codex/config.toml   tytéž servery pro Codex
-.claude/settings*    permissions a povolené MCP servery
-.githooks/           commit-msg hook (conventional commits + Zadání/Řešení)
-.gitmessage          šablona commit zprávy
-docs/                dokumentace pro člověka — kostra
-memory/              paměť agentů — kostra
-scripts/             new-project.ps1, template-update.ps1
+```bash
+bun run typecheck && bun run format && bun run lint
 ```
 
-Konvence samotné nejsou v tomto repu — jsou ve sdílených skillech v `~/.claude/skills`.
-Viz `AGENTS.md`.
+## Struktura
+
+```
+apps/web/     Next.js 16 App Router — veřejný web
+apps/studio/  Sanity Studio — CMS
+docs/         dokumentace pro člověka — požadavky, návrh, runbook
+memory/       paměť agentů — plány, rozhodnutí, rešerše, chyby
+```
+
+Stack a konvence popisuje [`AGENTS.md`](AGENTS.md); samotné konvence jsou ve
+sdílených skillech v `~/.claude/skills`, ne v tomto repu.

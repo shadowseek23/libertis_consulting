@@ -3,15 +3,16 @@ repozitáři (Claude Code, Codex, Cursor, Copilot a další). Pokud tvůj nástr
 soubor (např. `CLAUDE.md`), považuj tento dokument za nadřazený zdroj pravdy.
 
 <!--
-  Tenhle repozitář vznikl z šablony `project-template` (viz `.template-version`).
-  Invariantní části (Postup práce, Konvence, Jazyk, footer) drž shodné s šablonou,
-  ať jdou opravy backportovat. Projektově specifické části vyplň níže podle TODO.
+  Tenhle repozitář vznikl z šablony `nextjs-sanity-template`, která je potomkem
+  `project-template` (viz `.template-version`). Invariantní části (Stack, Postup práce,
+  Konvence, Jazyk, footer) drž shodné se šablonou, ať jdou opravy backportovat.
+  Projektově specifické části (Projektový kontext, Tři věci, Zakázáno) vyplň podle TODO.
 -->
 
 ## Projektový kontext
 
-<!-- TODO: Co se staví a proč. Jedna dvě věty. Stack. Co projekt NENÍ (žádný e-shop…). -->
-{{PROJECT_NAME}} — <stručný popis>.
+<!-- TODO: Co se staví a proč. Jedna dvě věty. Co projekt NENÍ (žádný e-shop…). -->
+{{PROJECT_NAME}} — <stručný popis>. Web na Next.js + Sanity CMS.
 
 **Stav: projekt nezahájen.** <!-- aktualizuj, jak projekt roste -->
 
@@ -20,7 +21,9 @@ soubor (např. `CLAUDE.md`), považuj tento dokument za nadřazený zdroj pravdy
 1. Přečti si tento dokument.
 2. <!-- TODO: odkaz na klíčovou rešerši/inventuru, bez které agent udělá špatná rozhodnutí. Smaž, pokud není. -->
 3. Přečti si aktivní plán v [`memory/tasks/`](memory/tasks/).
-4. Když si dokumentace nebo kód odporují, **ohlas to a nezačínej** — rozpor je vada
+4. Založ Sanity projekt (`sanity init` v `apps/studio`, nebo Sanity MCP) a doplň
+   `projectId`/`dataset` do `apps/studio/sanity.config.ts` a `sanity.cli.ts` (hledej `TODO_PROJECT_ID`).
+5. Když si dokumentace nebo kód odporují, **ohlas to a nezačínej** — rozpor je vada
    zadání a rozhodnutí patří uživateli, ne odhadu.
 
 ## Tři věci, které musíš vědět předem
@@ -28,22 +31,66 @@ soubor (např. `CLAUDE.md`), považuj tento dokument za nadřazený zdroj pravdy
 <!-- TODO: Projektově specifické pasti — věci, které nejsou vidět z kódu a agent je jinak
      nemůže tušit. Když žádné nejsou, celou sekci smaž. -->
 
+## Stack
+
+Bun workspaces monorepo:
+
+```
+apps/
+├── web/      # Next.js 16 App Router (React 19) — veřejný web
+└── studio/   # Sanity Studio (CMS)
+```
+
+Kořenový `package.json` deklaruje jen `workspaces: ["apps/*"]` a proxy skripty
+(`dev`, `build`, `lint`, `typecheck`) přes `bun run --cwd apps/web <skript>`.
+`studio` skript spouští Sanity Studio.
+
+**`apps/web`:**
+
+- Next.js 16 App Router, React 19, Turbopack
+- Tailwind CSS 4 přes `@theme` blok v `src/app/globals.css` (žádný `tailwind.config.js`)
+- shadcn/ui (styl `new-york`) nad Radix primitivy v `src/components/ui/`
+- `next-sanity` pro čtení obsahu, `@sanity/image-url` pro obrázky ze Sanity CDN
+- react-hook-form + zod na formuláře (přidej podle potřeby)
+- **bun** jako package manager — `bun`, ne `npm`/`yarn`
+
+**Struktura `apps/web/src/`:** `app/` (routy), `components/site/` (specifické komponenty),
+`components/ui/` (shadcn primitiva), `data/` (statická data), `lib/`, `hooks/`,
+`sanity/` (klient, GROQ dotazy), `assets/` (obrázky importované komponentami).
+
+**Obrázky** drž jako reálné binárky v gitu (`apps/web/src/assets/` nebo `public/`),
+nebo obsah řízený Sanity přes jeho CDN (`@sanity/image-url`). Responzivní `sizes`/srcset
+lad empiricky — skill `empirical-srcset`.
+
+## Deployment
+
+Vercel, **root directory `apps/web`** (monorepo). Provozní postupy — deploy, rollback,
+zálohy, env, diagnostika — v [`docs/runbook.md`](docs/runbook.md).
+
 ## Postup práce
 
 Z promptu vyčti, jestli jde o novou práci, opravu nebo revizi, a založ plán do
 `memory/tasks/{feature,bugfix,revision}/`. Kdy plán zakládat a kdy ne: skill
 `implementation-plan`.
 
-Features implementuj test-first tam, kde je co testovat (datové transformace, logika).
-U prezentačního markupu testy nevynucuj.
+Features implementuj test-first tam, kde je co testovat (datové transformace, mapování
+obsahu, GROQ). U prezentačního markupu testy nevynucuj.
 
 Když uděláš chybu, zapiš ji do `memory/mistakes.md` — co se stalo, jak jsi to napravil,
 **a jak jí příště předejít**.
 
 ## Povinné příkazy po každé změně
 
-Zatím nejsou — projekt nemá kód. **Doplň je sem, jakmile vznikne `package.json`**,
-v pořadí typecheck → format+lint → test. Podrobnosti: skill `quality-gate`.
+Spouštěj z kořene repa, v tomto pořadí. Podrobnosti: skill `quality-gate`.
+
+```bash
+bun run typecheck    # tsc --noEmit v apps/web (a apps/studio)
+bun run format       # prettier --write .
+bun run lint         # eslint v apps/web
+# test — doplň, jakmile vzniknou (datové transformace, mapování obsahu, GROQ)
+```
+
+Při selhání oprav příčinu, ne symptom. Nekomituj s červeným typecheckem ani lintem.
 
 ## Konvence
 
@@ -58,11 +105,10 @@ Struktura a workflow se řídí sdílenými skilly v `~/.claude/skills` (zrcadle
 | Psaní a údržba tohoto souboru | `agent-instructions` |
 | Kdy otevřít prohlížeč a kdy se zeptat | `browser-verification` |
 | Povinné kontroly po změně kódu | `quality-gate` |
-| Provozní runbook | `runbook` |
-<!-- TODO: přidej skilly podle stacku projektu, např.:
 | Sanity schémata, GROQ, TypeGen | `sanity-best-practices`, `nextjs-sanity` |
 | Responzivní obrázky | `empirical-srcset` |
--->
+| Provozní runbook | `runbook` |
+<!-- TODO: přidej skilly specifické pro tento projekt (např. `sanity-migration` u převodu z WordPressu). -->
 
 - **Univerzální rešerše** (Next.js, Vercel, SEO, agentní workflow) jsou v `C:\_dev\_research\`.
   Přečti si relevantní soubor, když téma řešíš — nekopíruj je sem.
@@ -80,6 +126,7 @@ Dokumentace, plány a commity **česky**. Kód, názvy souborů a identifikátor
 ## Zakázáno
 
 - Zavádět závislosti bez zápisu do `memory/decisions/` jako ADR.
+- Obcházet supply-chain guard v `bunfig.toml` (`minimumReleaseAgeExcludes`) bez souhlasu uživatele.
 <!-- TODO: projektově specifické zákazy (např. „sahat na produkci zápisem"). -->
 
 Než začneš měnit tento soubor, vyžádej si od uživatele explicitní souhlas.

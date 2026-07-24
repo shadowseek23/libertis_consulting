@@ -5,11 +5,15 @@
 
 ## Deploy
 
-<postup>
+Vercel, napojený na git repo. **Root directory projektu ve Vercelu nastav na `apps/web`**
+(monorepo). Push do main → produkční deploy; PR → preview deploy.
 
 ## Env proměnné
 
-<seznam>
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET` — čtení obsahu ze Sanity
+- `SANITY_API_READ_TOKEN` — jen pokud čteš draft/preview obsah
+<!-- TODO: doplň skutečné proměnné projektu -->
+
 
 ## Rollback
 
