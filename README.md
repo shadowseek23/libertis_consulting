@@ -19,7 +19,8 @@ Skript:
 - nastaví remote `template` na tento repozitář (rodičovství),
 - zapíše [`.template-version`](.template-version) s URL a commitem rodiče,
 - nahradí `{{PROJECT_NAME}}` v `AGENTS.md` a `README.md`,
-- zapne commit-msg hook (`git config core.hooksPath .githooks`).
+- zapne verzionovaný commit workflow: `commit-msg` hook a šablonu zprávy
+  (`core.hooksPath = .githooks`, `commit.template = .gitmessage`).
 
 Pak potomkovi nastavíš vlastní `origin` a odkomituješ.
 

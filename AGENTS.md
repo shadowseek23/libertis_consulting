@@ -40,6 +40,19 @@ U prezentačního markupu testy nevynucuj.
 Když uděláš chybu, zapiš ji do `memory/mistakes.md` — co se stalo, jak jsi to napravil,
 **a jak jí příště předejít**.
 
+Práci rozděluj do malých atomických Conventional Commitů. Atomický commit obsahuje
+jednu samostatně ověřitelnou a vratnou změnu; její test, dokumentace, konfigurace nebo
+lockfile do něj patří jen tehdy, když jsou pro tutéž změnu nutné. Nesouvisející refactor,
+formátování či vedlejší opravy patří do jiného commitu.
+
+Po ověření každého takového kroku commit vytvoř hned, bez čekání na další potvrzení,
+pokud uživatel výslovně neřekl necommitovat. Ve sdíleném working tree před stagingem
+založ `.commit-lock`, drž jej po celou dobu `git add` a `git commit` a vždy jej odstraň
+i při selhání; přesný postup, staging a formát zprávy určuje skill `conventional-commits`.
+
+Průběžné commity nevypisuj. V závěrečném předání stručně uveď, co se změnilo, jaké
+kontroly proběhly a které commity (SHA + subject) práci obsahují.
+
 ## Povinné příkazy po každé změně
 
 Zatím nejsou — projekt nemá kód. **Doplň je sem, jakmile vznikne `package.json`**,

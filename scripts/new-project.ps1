@@ -53,8 +53,9 @@ foreach ($f in @('AGENTS.md', 'README.md')) {
   }
 }
 
-# Commit-msg hook
+# Verzionovaný commit workflow
 git config core.hooksPath .githooks
+git config commit.template .gitmessage
 
 Write-Host ""
 Write-Host "✓ Hotovo: $Target" -ForegroundColor Green
@@ -62,6 +63,6 @@ Write-Host "  Zbývá:" -ForegroundColor Yellow
 Write-Host "   1. Vyplň TODO placeholdery v AGENTS.md (Projektový kontext, Zakázáno…)."
 Write-Host "   2. Nastav vlastní origin:  git remote add origin <url-tveho-repa>"
 Write-Host "   3. Uprav .mcp.json / .codex/config.toml podle stacku."
-Write-Host "   4. Commitni:  git add -A && git commit"
+Write-Host "   4. Commitni atomicky:  git add <relevantni-cesty>  # nebo git add -p"
 Write-Host ""
 Write-Host "  Remote 'template' zůstává napojený — novinky ze šablony: scripts/template-update.ps1"
