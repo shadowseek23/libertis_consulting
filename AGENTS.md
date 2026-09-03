@@ -52,7 +52,8 @@ Kořenový `package.json` deklaruje jen `workspaces: ["apps/*"]` a proxy skripty
 - shadcn/ui (styl `new-york`) nad Radix primitivy v `src/components/ui/`
 - `next-sanity` pro čtení obsahu, `@sanity/image-url` pro obrázky ze Sanity CDN
 - react-hook-form + zod na formuláře (přidej podle potřeby)
-- **bun** jako package manager — `bun`, ne `npm`/`yarn`
+- **bun** jako package manager — instalaci a závislosti přes `bun`, skripty přes
+  `bun run` a jednorázové binárky přes `bunx`; nepoužívej `npm`, `npx` ani `yarn`
 
 **Struktura `apps/web/src/`:** `app/` (routy), `components/site/` (specifické komponenty),
 `components/ui/` (shadcn primitiva), `data/` (statická data), `lib/`, `hooks/`,
