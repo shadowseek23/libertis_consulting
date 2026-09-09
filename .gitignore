@@ -28,6 +28,7 @@ apps/studio/.sanity/
 # Scratch
 .tmp/
 .worktrees/
+.claude/worktrees/
 temp/
 
 # Agent coordination
