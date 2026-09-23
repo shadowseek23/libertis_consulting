@@ -29,6 +29,8 @@ apps/studio/.sanity/
 .tmp/
 .worktrees/
 .claude/worktrees/
+# Lokální preview konfigurace Claude Code (dev server pro náhled), nepatří do repa
+.claude/launch.json
 temp/
 
 # Agent coordination
