@@ -1,0 +1,7 @@
+# Hlavní vizuál
+
+Vytvořeno vestavěným nástrojem image_gen. Výstup: `apps/web/public/brand/libertis-wing.png`. Logo dodané uživatelem je samostatný původní soubor; generování jej neměnilo.
+
+## Finální prompt
+
+Use case: stylized-concept. Asset type: original editorial hero artwork for Libertis Consulting, an elegant strategy and design studio website with a white background. Create a high-end 3D sculptural abstract form inspired by a bird's wing opening and flowing topographic paper strata. A single dramatic fan of 12-18 long overlapping ribbon-like feather forms unfurls from lower left toward upper right, curving gracefully with confident sculptural volume, delicate ridges, soft cast shadows, handmade tactile satin paper and ceramic surfaces. Rich deep petrol teal #0e2931 and #12484c, turquoise #2b7574 transitioning into pale aqua on the feather tips, with just ONE very slender flowing wine-red #861211 ribbon threaded among the layers. Artistic studio product rendering, refined and believable dimensionality, premium branding art direction. Pure white seamless background #ffffff and natural soft light, a soft grounding shadow. Broad landscape composition 3:2, sculpture in the center-right filling the frame with graceful diagonal momentum and generous white space around the edges. No text, no lettering, no logos, no UI, no watermarks, no photographs of birds, no spheres, no generic glossy blobs. The design should feel fresh, soulful, precise, free, and artful.

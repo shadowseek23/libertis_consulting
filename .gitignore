@@ -13,9 +13,8 @@ dist/
 build/
 *.tsbuildinfo
 
-# Sanity
-apps/studio/dist/
-apps/studio/.sanity/
+# Local configuration backups
+*.backup-*
 
 # Vercel
 .vercel

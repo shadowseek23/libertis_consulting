@@ -1,5 +1,2 @@
-[mcp_servers.sanity]
-url = "https://mcp.sanity.io/mcp"
-
 [mcp_servers.vercel]
 url = "https://mcp.vercel.com"

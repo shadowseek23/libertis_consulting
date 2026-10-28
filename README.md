@@ -1,37 +1,43 @@
-# {{PROJECT_NAME}}
+# Libertis Consulting
 
-Web na **Next.js 16 (App Router) + Sanity CMS**, bun workspaces monorepo.
-Repozitář vznikl z šablony `nextjs-sanity-template` (potomek `project-template`,
-viz [`.template-version`](.template-version) a [`TEMPLATE.md`](TEMPLATE.md)).
-
-> Config-only scaffold — konfigurace, závislosti a struktura složek jsou hotové,
-> aplikační kód (layout, stránky, schémata) si doplní projekt.
+Český prezentační web kreativního studia Daniela Sýkory. Strategie značky, obsahová komunikace a digitální prezentace. Next.js App Router ze sdílené šablony, bez Sanity.
 
 ## Spuštění
 
-```bash
-bun install
-bun run dev       # Next.js web (apps/web)
-bun run studio    # Sanity Studio (apps/studio)
+```sh
+bun install --frozen-lockfile
+bun run dev
 ```
 
-Před spuštěním doplň `projectId`/`dataset` do `apps/studio/sanity.config.ts`
-a `sanity.cli.ts` (hledej `TODO_PROJECT_ID`).
+Vývojový náhled: [http://localhost:5600](http://localhost:5600).
+
+```sh
+bun run build
+bun run start
+```
+
+Produkční náhled: [http://localhost:5601](http://localhost:5601). Žádné povinné proměnné prostředí nejsou potřeba. Volitelný `SITE_URL` nastavuje základ absolutních URL pro sdílení; příklad je v `.env.example`.
 
 ## Kontroly
 
-```bash
-bun run typecheck && bun run format && bun run lint
+```sh
+bun run typecheck
+bun run format
+bun run lint
+bun run build
 ```
 
-## Struktura
+## Obsah a vzhled
 
-```
-apps/web/     Next.js 16 App Router — veřejný web
-apps/studio/  Sanity Studio — CMS
-docs/         dokumentace pro člověka — požadavky, návrh, runbook
-memory/       paměť agentů — plány, rozhodnutí, rešerše, chyby
-```
+- Hlavní texty a služby: `apps/web/src/app/page.tsx`.
+- Sedm referencí a jejich popisy: `apps/web/src/data/projects.ts`.
+- Skutečné screenshoty: `apps/web/public/references/`.
+- Dodané logo a hlavní vizuál: `apps/web/public/brand/`.
+- Lokální fonty Manrope a Instrument Serif včetně OFL licencí: `apps/web/src/assets/fonts/`.
+- Styly: `apps/web/src/app/globals.css`.
+- [Popisy, zdroje a screenshoty referencí](docs/references.md).
+- [Architektura](docs/design/architecture.md) a [provozní postupy](docs/runbook.md).
 
-Stack a konvence popisuje [`AGENTS.md`](AGENTS.md); samotné konvence jsou ve
-sdílených skillech v `~/.claude/skills`, ne v tomto repu.
+Web má přirozený scroll bez blokování nebo skrývání obsahu. Jemný pohyb hlavního vizuálu a hover efekty respektují nastavení omezeného pohybu. Kontaktní odkazy otevřou e-mailového nebo telefonního klienta; web neodesílá formulář a nepoužívá analytiku.
+
+Jde o lokální návrh, zatím s `noindex`. Produkční hosting ani kanonická doména nejsou nastaveny. Původ ze šablony je zachován v historii, remote `template` a `.template-version`. `git push` provádí výhradně uživatel.

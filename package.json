@@ -1,5 +1,5 @@
 {
-  "name": "{{PROJECT_NAME}}",
+  "name": "libertis-consulting",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -10,9 +10,8 @@
     "build": "bun run --cwd apps/web build",
     "start": "bun run --cwd apps/web start",
     "lint": "bun run --cwd apps/web lint",
-    "typecheck": "bun run --cwd apps/web typecheck && bun run --cwd apps/studio typecheck",
-    "format": "prettier --write .",
-    "studio": "bun run --cwd apps/studio dev"
+    "typecheck": "bun run --cwd apps/web typecheck",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "prettier": "^3.7.3"

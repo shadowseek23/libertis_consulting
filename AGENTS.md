@@ -11,25 +11,25 @@ soubor (např. `CLAUDE.md`), považuj tento dokument za nadřazený zdroj pravdy
 
 ## Projektový kontext
 
-<!-- TODO: Co se staví a proč. Jedna dvě věty. Co projekt NENÍ (žádný e-shop…). -->
-{{PROJECT_NAME}} — <stručný popis>. Web na Next.js + Sanity CMS.
+libertis.consulting — český prezentační web kreativního studia Daniela Sýkory.
+Strategie značky, obsahová komunikace a digitální prezentace. Next.js bez CMS.
 
-**Stav: projekt nezahájen.** <!-- aktualizuj, jak projekt roste -->
+**Stav: první funkční lokální návrh.**
 
 ## Než začneš
 
 1. Přečti si tento dokument.
-2. <!-- TODO: odkaz na klíčovou rešerši/inventuru, bez které agent udělá špatná rozhodnutí. Smaž, pokud není. -->
+2. Přečti si `docs/requirements/main.md` a `docs/references.md`.
 3. Přečti si aktivní plán v [`memory/tasks/`](memory/tasks/).
-4. Založ Sanity projekt (`sanity init` v `apps/studio`, nebo Sanity MCP) a doplň
-   `projectId`/`dataset` do `apps/studio/sanity.config.ts` a `sanity.cli.ts` (hledej `TODO_PROJECT_ID`).
+4. Obsah a reference jsou přímo ve zdrojových souborech; CMS je výslovně vyloučený.
 5. Když si dokumentace nebo kód odporují, **ohlas to a nezačínej** — rozpor je vada
    zadání a rozhodnutí patří uživateli, ne odhadu.
 
 ## Tři věci, které musíš vědět předem
 
-<!-- TODO: Projektově specifické pasti — věci, které nejsou vidět z kódu a agent je jinak
-     nemůže tušit. Když žádné nejsou, celou sekci smaž. -->
+- Základ je bílý. Typografie a barevné detaily mají být výrazné, ale výsledek střídmý.
+- Žádné skrývání obsahu před scroll animací ani změny přirozeného scrollování.
+- U posledních čtyř referencí není doložený rozsah dodávky; nevymýšlej výsledky.
 
 ## Stack
 
@@ -37,35 +37,31 @@ Bun workspaces monorepo:
 
 ```
 apps/
-├── web/      # Next.js 16 App Router (React 19) — veřejný web
-└── studio/   # Sanity Studio (CMS)
+└── web/      # Next.js 16 App Router (React 19) — veřejný web
 ```
 
 Kořenový `package.json` deklaruje jen `workspaces: ["apps/*"]` a proxy skripty
 (`dev`, `build`, `lint`, `typecheck`) přes `bun run --cwd apps/web <skript>`.
-`studio` skript spouští Sanity Studio.
 
 **`apps/web`:**
 
 - Next.js 16 App Router, React 19, Turbopack
 - Tailwind CSS 4 přes `@theme` blok v `src/app/globals.css` (žádný `tailwind.config.js`)
 - shadcn/ui (styl `new-york`) nad Radix primitivy v `src/components/ui/`
-- `next-sanity` pro čtení obsahu, `@sanity/image-url` pro obrázky ze Sanity CDN
 - react-hook-form + zod na formuláře (přidej podle potřeby)
 - **bun** jako package manager — instalaci a závislosti přes `bun`, skripty přes
   `bun run` a jednorázové binárky přes `bunx`; nepoužívej `npm`, `npx` ani `yarn`
 
 **Struktura `apps/web/src/`:** `app/` (routy), `components/site/` (specifické komponenty),
 `components/ui/` (shadcn primitiva), `data/` (statická data), `lib/`, `hooks/`,
-`sanity/` (klient, GROQ dotazy), `assets/` (obrázky importované komponentami).
+`assets/` (lokální fonty a importovaná média).
 
-**Obrázky** drž jako reálné binárky v gitu (`apps/web/src/assets/` nebo `public/`),
-nebo obsah řízený Sanity přes jeho CDN (`@sanity/image-url`). Responzivní `sizes`/srcset
+**Obrázky** drž jako reálné binárky v gitu (`apps/web/src/assets/` nebo `public/`). Responzivní `sizes`/srcset
 lad empiricky — skill `empirical-srcset`.
 
 ## Deployment
 
-Vercel, **root directory `apps/web`** (monorepo). Provozní postupy — deploy, rollback,
+Lokální náhled; případný Vercel má **root directory `apps/web`** (monorepo). Provozní postupy — deploy, rollback,
 zálohy, env, diagnostika — v [`docs/runbook.md`](docs/runbook.md).
 
 ## Postup práce
@@ -98,7 +94,7 @@ kontroly proběhly a které commity (SHA + subject) práci obsahují.
 Spouštěj z kořene repa, v tomto pořadí. Podrobnosti: skill `quality-gate`.
 
 ```bash
-bun run typecheck    # tsc --noEmit v apps/web (a apps/studio)
+bun run typecheck    # tsc --noEmit v apps/web
 bun run format       # prettier --write .
 bun run lint         # eslint v apps/web
 # test — doplň, jakmile vzniknou (datové transformace, mapování obsahu, GROQ)
@@ -111,20 +107,18 @@ Při selhání oprav příčinu, ne symptom. Nekomituj s červeným typecheckem 
 Struktura a workflow se řídí sdílenými skilly v `~/.claude/skills` (zrcadlené do
 `~/.agents/skills` pro Codex). Přečti si relevantní skill, místo abys konvence odvozoval:
 
-| Téma | Skill |
-|---|---|
-| Kam který soubor patří (`docs/` vs `memory/`) | `project-structure` |
-| Plány, ADR, handoffy | `project-memory`, `implementation-plan` |
-| Formát commitů (Zadání/Řešení, česky) | `conventional-commits` |
-| Psaní a údržba tohoto souboru | `agent-instructions` |
-| Kdy otevřít prohlížeč a kdy se zeptat | `browser-verification` |
-| Povinné kontroly po změně kódu | `quality-gate` |
-| Sanity schémata, GROQ, TypeGen | `sanity-best-practices`, `nextjs-sanity` |
-| Responzivní obrázky | `empirical-srcset` |
-| Provozní runbook | `runbook` |
-<!-- TODO: přidej skilly specifické pro tento projekt (např. `sanity-migration` u převodu z WordPressu). -->
+| Téma                                          | Skill                                   |
+| --------------------------------------------- | --------------------------------------- |
+| Kam který soubor patří (`docs/` vs `memory/`) | `project-structure`                     |
+| Plány, ADR, handoffy                          | `project-memory`, `implementation-plan` |
+| Formát commitů (Zadání/Řešení, česky)         | `conventional-commits`                  |
+| Psaní a údržba tohoto souboru                 | `agent-instructions`                    |
+| Kdy otevřít prohlížeč a kdy se zeptat         | `browser-verification`                  |
+| Povinné kontroly po změně kódu                | `quality-gate`                          |
+| Responzivní obrázky                           | `empirical-srcset`                      |
+| Provozní runbook                              | `runbook`                               |
 
-- **Univerzální rešerše** (Next.js, Vercel, SEO, agentní workflow) jsou v `C:\_dev\_research\`.
+- **Univerzální rešerše** (Next.js, Vercel, SEO, agentní workflow) jsou v `$RESEARCH/`.
   Přečti si relevantní soubor, když téma řešíš — nekopíruj je sem.
   `memory/research/` je jen pro věci specifické pro tenhle projekt.
 - **Operační procedury:** `docs/runbook.md`. Aktualizuj ho ve stejném commitu, kdykoli
@@ -134,13 +128,12 @@ Struktura a workflow se řídí sdílenými skilly v `~/.claude/skills` (zrcadle
 ## Jazyk
 
 Dokumentace, plány a commity **česky**. Kód, názvy souborů a identifikátory anglicky.
-<!-- TODO: pokud je obsah/produkt v jiném jazyce, dopiš pravidlo (např. „obsah webu je
-     anglický — nepřekládej ho"). -->
+Obsah webu je česky.
 
 ## Zakázáno
 
 - Zavádět závislosti bez zápisu do `memory/decisions/` jako ADR.
 - Obcházet supply-chain guard v `bunfig.toml` (`minimumReleaseAgeExcludes`) bez souhlasu uživatele.
-<!-- TODO: projektově specifické zákazy (např. „sahat na produkci zápisem"). -->
+- `git push` provádí výhradně uživatel.
 
 Než začneš měnit tento soubor, vyžádej si od uživatele explicitní souhlas.
